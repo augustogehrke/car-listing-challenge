@@ -1,0 +1,42 @@
+version: '3.8'
+
+networks:
+  app_network:
+    driver: bridge
+
+services:
+  database:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: car_inventory
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+  app:
+    build: .
+    container_name: car_listing_challenge
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+    environment:
+      DATABASE_URL: postgresql://admin:admin@database:5432/car_inventory
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: >
+      sh -c "[ -f .env ] || cp .env.example .env && npm run dev"
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
