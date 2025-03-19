@@ -92,3 +92,4 @@ The application will be accessible at `http://localhost:3000`.
 - **exceljs** - Excel file parsing
 - **Tailwind CSS** - Styling framework
 - **TypeScript** - Static typing for maintainability
+- **Eslint** - To ensure code standardization
